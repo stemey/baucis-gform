@@ -14,7 +14,7 @@ function getBase(request, extra) {
     return request.protocol + '://' + request.headers.host + parts.join('/');
 };
 
-var refUtils = new RefUtils("", "/gform");
+var refUtils = new RefUtils(".", "./gform");
 
 
 // A method for generating a Swagger resource listing
@@ -43,8 +43,8 @@ var decorator = module.exports = function (options) {
         var route = url.resolve('/', controller.get('plural'));
         var resource = {};
         resource.schemaUrl = refUtils.getSchemaUrl(controller);
-        resource.resourceUrl = refUtils.getResourceUrl(controller);
-        resource.collectionUrl = refUtils.getResourceUrl(controller);
+        resource.resourceUrl = refUtils.getResourceUrl(controller)+"/";
+        resource.collectionUrl = refUtils.getResourceUrl(controller)+"/";
         resource.name = controller.get('singular');
         resources.push(resource);
     });
@@ -55,7 +55,7 @@ var decorator = module.exports = function (options) {
         response.json({
             version: options.release,
             resources: resources,
-            basePath: getBase(request, 1)
+            basePath: getBase(request, 1)+"/"
         });
     });
 
