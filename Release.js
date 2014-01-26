@@ -1,56 +1,77 @@
 // __Dependencies__
 var url = require('url');
+var BaucisSchemaGenerator = require('./BaucisSchemaGenerator');
+var RefUtils = require('./RefUtils');
+
 
 // __Private Module Members__
 
 // Figure out the basePath for Swagger API definition
-function getBase (request, extra) {
-  var parts = request.originalUrl.split('/');
-  // Remove extra path parts.
-  parts.splice(-extra, extra);
-  return request.protocol + '://' + request.headers.host + parts.join('/');
+function getBase(request, extra) {
+    var parts = request.originalUrl.split('/');
+    // Remove extra path parts.
+    parts.splice(-extra, extra);
+    return request.protocol + '://' + request.headers.host + parts.join('/');
 };
 
-// A method for generating a Swagger resource listing
-function generateGformListing (options) {
-  var plurals = options.controllers.map(function (controller) {
-    return controller.get('plural');
-  });
-  var listing = {
-    apiVersion: options.version,
-    swaggerVersion: '1.1',
-    basePath: options.basePath,
-    apis: plurals.map(function (plural) {
-      return { path: '/gform/' + plural, description: 'Operations about ' + plural + '.' };
-    })
-  };
+var refUtils = new RefUtils("", "/gform");
 
-  return listing;
+
+// A method for generating a Swagger resource listing
+function generateGformListing(options) {
+    var resources = [];
+    options.controllers.forEach(function (controller) {
+        var resource = {};
+        resource.idProperty = "_id";
+        resource.resourceUrl = refUtils.getResourceUrl(controller);
+        resource.schemaUrl = refUtils.getSchemaUrl(controller);
+    });
+    var listing = {
+        basePath: options.basePath,
+        resources: resource
+    };
+
+    return listing;
 }
 
 // __Module Definition__
 var decorator = module.exports = function (options) {
-  var release = this;
+    var release = this;
 
-  // Activate Swagger resource listing.
-  release.get('/gform', function (request, response, next) {
-    response.set('X-Powered-By', 'Baucis');
-    response.json(generateGformListing({
-        version: options.release,
-        controllers: options.controllers,
-        basePath: getBase(request, 1)
-    }));
-  });
-
-  // Add routes for the controller's Swagger API definitions.
-  options.controllers.forEach(function (controller) {
-    var route = url.resolve('/', controller.get('plural'));
-
-    release.get('/gform' + route, function (request, response, next) {
-      response.set('X-Powered-By', 'Baucis');
-      response.json(controller.gformrest);
+    var resources = [];
+    options.controllers.forEach(function (controller) {
+        var route = url.resolve('/', controller.get('plural'));
+        var resource = {};
+        resource.schemaUrl = refUtils.getSchemaUrl(controller);
+        resource.resourceUrl = refUtils.getResourceUrl(controller);
+        resource.collectionUrl = refUtils.getResourceUrl(controller);
+        resource.name = controller.get('singular');
+        resources.push(resource);
     });
-  });
 
-  return release;
+    // Activate Swagger resource listing.
+    release.get('/gform', function (request, response, next) {
+        response.set('X-Powered-By', 'Baucis');
+        response.json({
+            version: options.release,
+            resources: resources,
+            basePath: getBase(request, 1)
+        });
+    });
+
+    // Add routes for the controller's Swagger API definitions.
+    options.controllers.forEach(function (controller) {
+        var route = url.resolve('/', controller.get('plural'));
+        var generator = new BaucisSchemaGenerator(controller, options.controllers, refUtils);
+
+        var resource = generator.generateModelDefinition();
+        controller.gformResource = resource;
+
+        release.get('/gform' + route, function (request, response, next) {
+            response.set('X-Powered-By', 'Baucis');
+            response.json(controller.gformResource);
+        });
+    });
+
+    return release;
 };
