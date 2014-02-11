@@ -8,7 +8,7 @@ var RefUtils = module.exports = function (basePath, schemaBasePath) {
 };
 
 RefUtils.prototype.getResourceUrl = function (controller) {
-    return this.basePath + "/" + controller.get('plural') ;
+    return this.basePath + "/" + controller.get('plural') +"/";
 }
 
 RefUtils.prototype.getSchemaUrl = function (controller) {

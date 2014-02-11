@@ -3,6 +3,7 @@ var url = require('url');
 var BaucisSchemaGenerator = require('./BaucisSchemaGenerator');
 var RefUtils = require('./RefUtils');
 
+var conf = require('./conf');
 
 // __Private Module Members__
 
@@ -43,8 +44,8 @@ var decorator = module.exports = function (options) {
         var route = url.resolve('/', controller.get('plural'));
         var resource = {};
         resource.schemaUrl = refUtils.getSchemaUrl(controller);
-        resource.resourceUrl = refUtils.getResourceUrl(controller)+"/";
-        resource.collectionUrl = refUtils.getResourceUrl(controller)+"/";
+        resource.resourceUrl = refUtils.getResourceUrl(controller);
+        resource.collectionUrl = refUtils.getResourceUrl(controller);
         resource.name = controller.get('singular');
         resources.push(resource);
     });
@@ -55,14 +56,22 @@ var decorator = module.exports = function (options) {
         response.json({
             version: options.release,
             resources: resources,
-            basePath: getBase(request, 1)+"/"
+            basePath: getBase(request, 1) + "/"
         });
     });
 
     // Add routes for the controller's Swagger API definitions.
     options.controllers.forEach(function (controller) {
         var route = url.resolve('/', controller.get('plural'));
-        var generator = new BaucisSchemaGenerator(controller, options.controllers, refUtils);
+
+        var GeneratorClass = controller.gformGeneratorClass || conf.GeneratorClass || BaucisSchemaGenerator;
+        var generator = controller.gformGenerator || conf.generator || new GeneratorClass(controller, options.controllers, refUtils);
+        var generatorProps = controller.gformGeneratorProps || conf.generatorProps;
+        if (generatorProps) {
+            Object.keys(generatorProps).forEach(function (key) {
+                generator[key] = generatorProps[key];
+            })
+        }
 
         var resource = generator.generateModelDefinition();
         controller.gformResource = resource;

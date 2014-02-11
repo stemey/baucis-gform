@@ -4,3 +4,6 @@ var deco = require('deco');
 var decorators = deco.require(__dirname, [  'Release' ]).hash;
 
 baucis.Release.decorators(decorators.Release);
+
+var conf = require('./conf');
+module.exports=conf;

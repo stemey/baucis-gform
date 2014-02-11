@@ -1,28 +1,33 @@
 {
-    "name": "baucis-gform",
-    "version": "0.0.1",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "test": "mocha --bail --timeout 5000"
-    },
-    "author": {
-        "name": "Stefan Meyer"
-    },
-    "license": "MIT",
-    "dependencies": {
-        "deco": "~0.3.2"
-    },
-    "peerDependencies": {
-        "mongoose": ">=3.8.1",
-        "baucis": ">=0.14.2"
-    },
-    "devDependencies": {
-        "mocha": "~1.8.2",
-        "expect.js": "~0.2.0",
-        "request": "~2.21.0",
-        "mongoose": "~3.8.1",
-        "express": "~3.4.6",
-        "async": "~0.2.9"
-    }
+  "name": "baucis-gform",
+  "version": "0.0.3",
+  "description": "baucis-swagger ==============",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --bail --timeout 5000"
+  },
+  "author": {
+    "name": "Stefan Meyer"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "deco": "~0.3.2",
+    "mongoose-schema": ">=0.0.3"
+  },
+  "peerDependencies": {
+    "mongoose": ">=3.8.1",
+    "baucis": ">=0.14.2"
+  },
+  "devDependencies": {
+    "mocha": "~1.8.2",
+    "expect.js": "~0.2.0",
+    "request": "~2.21.0",
+    "mongoose": "~3.8.1",
+    "express": "~3.4.6",
+    "async": "~0.2.9"
+  },
+  "readme": "baucis-swagger\n==============\n",
+  "readmeFilename": "README.md",
+  "_id": "baucis-gform@0.0.3",
+  "_from": "baucis-gform@>=0.0.3"
 }

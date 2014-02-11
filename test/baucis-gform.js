@@ -65,8 +65,4 @@ describe('Swagger Resource Listing', function () {
 
 
 
-  it('should generate embedded models correctly');
-  it('should generate documentation for each controller');
-  it('should keep paths deselected in the schema private');
-  it('should keep paths deselected in the controller private');
 });

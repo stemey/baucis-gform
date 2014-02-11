@@ -21,16 +21,13 @@ var fixture = module.exports = {
       name: { type: String, required: true },
       diseases: { type: [ String ], select: false },
       species: { type: String, default: 'n/a', select: false },
-      related: { type: Schema.ObjectId, ref: 'vegetable' }
+      related: { type: Schema.ObjectId, ref: 'fungus' }
     });
 
-    var Fungus = new Schema({ 'hyphenated-field-name': String });
-    var Stuffing = new Schema({ bread: Boolean });
-    var Goose = new Schema({ cooked: Boolean, stuffed: [Stuffing] });
+    var Fungus = new Schema({ 'name': String });
 
     if (!mongoose.models['vegetable']) mongoose.model('vegetable', Vegetable);
     if (!mongoose.models['fungus']) mongoose.model('fungus', Fungus);
-    if (!mongoose.models['goose']) mongoose.model('goose', Goose);
 
     fixture.controller = baucis.rest({
       singular: 'vegetable',
@@ -45,10 +42,6 @@ var fixture = module.exports = {
       select: '-hyphenated-field-name'
     });
 
-    baucis.rest({
-      singular: 'goose',
-      plural: 'geese'
-    });
 
     app = express();
     app.use('/api', baucis());

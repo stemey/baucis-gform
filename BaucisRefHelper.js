@@ -1,4 +1,3 @@
-// This is a Controller mixin to add methods for generating Swagger data.
 
 
 // __Module Definition__
