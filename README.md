@@ -19,7 +19,7 @@ see [here](https://github.com/stemey/baucis-example).
 gform provides a lot of ways to customize the ui. You can do this in the client or on the server.
 Have a look at all the features [here] (www.toobop.net).
 
-### attribute meta data
+### attribute level meta data
 
 Add meta data to a gform property on the schema's path options.
 
@@ -47,8 +47,11 @@ The following properties are supported(see [details](www.toobop.net/schema)):
 * groupCode : assigns this attribute to a group defined on the schema level
 
 
+
 ### schema level meta data
 
+
+#### groups
 Define groups on the schema level. Add a property gform to the schema object's options.
 the property contains a property group which defines the group and possible subgroups. Here is an example for a tab:
 
@@ -65,6 +68,19 @@ the property contains a property group which defines the group and possible subg
         text: String, // will be assigned to general group
         title: { type: String, groupCode:"text"}, // assigned to text group
     }, {gform: {group: group}})
+
+
+#### references
+
+To find a referenced model the gform client uses an autocomplete input element.
+The search is based on a single field which by default is either `name` or `label` if they exist.
+To set a different field use the configuration property `labelAttribute` on the schema level
+
+
+    var user = Schema({
+        firstname: String, // the field to search when looking for referenced Users
+        age: Integer
+    }, {gform: {labelAttribute: "firstname"}})
 
 
 
