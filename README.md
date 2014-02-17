@@ -1,7 +1,7 @@
 #baucis-gform
 
 
-Use baucis-gform and [gform-rest-client] to quickly create a data administration ui for your [mongoose] managed data.
+Use baucis-gform and [gform-admin] to quickly create a data administration ui for your [mongoose] managed data.
 
 ##Examples
 
