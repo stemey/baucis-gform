@@ -84,7 +84,7 @@ To set a different field use the configuration property `labelAttribute` on the 
 
 
 
-[admin-gform]: https://github.com/stemey/gform-admin
+[gform-admin]: https://github.com/stemey/gform-admin
 [baucis]: http://github.com/wprl/baucis
 [gform]: http://toobop.net
 [mongoose]: http://github.com/Learnboost/mongoose
