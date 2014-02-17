@@ -1,7 +1,7 @@
 {
   "name": "baucis-gform",
-  "version": "0.0.3",
-  "description": "baucis-swagger ==============",
+  "version": "0.0.4",
+  "description": "Extension for baucis to provide mongoose schema data via rest services",
   "main": "index.js",
   "scripts": {
     "test": "mocha --bail --timeout 5000"
@@ -26,8 +26,7 @@
     "express": "~3.4.6",
     "async": "~0.2.9"
   },
-  "readme": "baucis-swagger\n==============\n",
   "readmeFilename": "README.md",
-  "_id": "baucis-gform@0.0.3",
-  "_from": "baucis-gform@>=0.0.3"
+  "_id": "baucis-gform@0.0.4",
+  "_from": "baucis-gform@>=0.0.4"
 }
