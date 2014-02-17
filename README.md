@@ -37,7 +37,7 @@ Add meta data to a gform property on the schema's path options.
         editor: "textarea"
     };
 
-The following properties are supported(see [details](http://www.toobop.net/schema)):
+The following properties are supported(see [details](http://www.toobop.net/gform/app/schema)):
 
 * label : The label of the attribute
 * description : a long text describing the attribute's purpose
@@ -84,7 +84,7 @@ To set a different field use the configuration property `labelAttribute` on the 
 
 
 
-[gform-rest-client]: https://github.com/stemey/gform-admin
+[admin-gform]: https://github.com/stemey/gform-admin
 [baucis]: http://github.com/wprl/baucis
 [gform]: http://toobop.net
 [mongoose]: http://github.com/Learnboost/mongoose
