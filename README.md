@@ -17,7 +17,7 @@ see [here](https://github.com/stemey/baucis-example).
 ##Customization
 
 gform provides a lot of ways to customize the ui. You can do this in the client or on the server.
-Have a look at all the features [here] (www.toobop.net).
+Have a look at all the features [here] (http://www.toobop.net).
 
 ### attribute level meta data
 
@@ -37,7 +37,7 @@ Add meta data to a gform property on the schema's path options.
         editor: "textarea"
     };
 
-The following properties are supported(see [details](www.toobop.net/schema)):
+The following properties are supported(see [details](http://www.toobop.net/schema)):
 
 * label : The label of the attribute
 * description : a long text describing the attribute's purpose
