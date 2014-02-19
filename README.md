@@ -5,7 +5,7 @@ Use baucis-gform and [gform-admin] to quickly create a data administration ui fo
 
 ##Examples
 
-see [here](https://github.com/stemey/baucis-example).
+see [here](https://github.com/stemey/mongoose-administration-example).
 
 ##Installation
 
@@ -84,9 +84,9 @@ To set a different field use the configuration property `labelAttribute` on the 
 
 
 
-[gform-admin]: https://github.com/stemey/gform-admin
+[gform-admin]: http://github.com/stemey/gform-admin
 [baucis]: http://github.com/wprl/baucis
-[gform]: http://toobop.net
+[gform]: http://www.toobop.net
 [mongoose]: http://github.com/Learnboost/mongoose
 
 
