@@ -5,13 +5,45 @@ Use baucis-gform and [gform-admin] to quickly create a data administration ui fo
 
 ##Examples
 
-see [here](https://github.com/stemey/mongoose-administration-example).
+see [here](https://github.com/stemey/baucis-example).
 
 ##Installation
 
-1. add it to your `package.json`.
-2. call `npm install`
-3. call `require('baucis-gform');` before creating your [baucis] controller via `baucis.rest('user');`
+Configure Gform:
+
+    // configure gform schema generator
+    var Gform = require('baucis-gform');
+    var TabGroupCreator = require('mongoose-schema/groupcreator/TabGroupCreator');
+    var creator = new TabGroupCreator();
+    var gform = new Gform({basePath:"/api", groupCreator: creator});
+
+
+Create your models and add baucis rest routes
+
+	// Create a mongoose schema.
+	var Vegetable = new mongoose.Schema({ name: String });
+	// Register new models with mongoose.
+	mongoose.model('vegetable', Vegetable);
+	// Create a simple controller.  By default these HTTP methods
+	// are activated: HEAD, GET, POST, PUT, DELETE
+	baucis.rest('vegetable');
+	// Create the app and listen for API requests
+	var app = express();
+	app.use('/api', baucis());
+	
+Now add the gform routes and start express
+	
+	gform.start(app);
+	app.listen(80);
+
+
+The following urls are available now:
+ 
+ * model data via baucis: `/localhost:80/api/vegetable`
+
+ * general meta data: `/localhost:80/api/gform`
+
+ * vegetable gform schema: `/localhost:80/api/gform/vegetable`
 
 
 ##Customization
@@ -84,9 +116,9 @@ To set a different field use the configuration property `labelAttribute` on the 
 
 
 
-[gform-admin]: http://github.com/stemey/gform-admin
+[gform-admin]: https://github.com/stemey/gform-admin
 [baucis]: http://github.com/wprl/baucis
-[gform]: http://www.toobop.net
+[gform]: http://toobop.net
 [mongoose]: http://github.com/Learnboost/mongoose
 
 
