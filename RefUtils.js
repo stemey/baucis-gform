@@ -7,11 +7,11 @@ var RefUtils = module.exports = function (basePath, schemaBasePath) {
     this.schemaBasePath = schemaBasePath;
 };
 
-RefUtils.prototype.getResourceUrl = function (controller) {
-    return this.basePath + "/" + controller.get('plural') +"/";
+RefUtils.prototype.getResourceUrl = function (model) {
+    return this.basePath + "/" + model.plural() +"/";
 }
 
-RefUtils.prototype.getSchemaUrl = function (controller) {
-    return this.schemaBasePath + "/" + controller.get('plural');
+RefUtils.prototype.getSchemaUrl = function (model) {
+    return this.schemaBasePath + "/" + model.plural();
 }
 

@@ -3,6 +3,7 @@ var BaucisSchemaGenerator = require('./BaucisSchemaGenerator');
 var RefUtils = require('./RefUtils');
 var baucis = require('baucis');
 var meta = require('./meta');
+var mongoose = require('mongoose');
 
 
 var Gform = function (conf) {
@@ -10,10 +11,11 @@ var Gform = function (conf) {
 	this.basePath = conf.basePath || "."
 	this.gformPath = conf.gformPath || "/gform"
 	this.refUtils = new RefUtils(this.basePath, this.basePath + this.gformPath);
+	this.controllers = meta.controllers;
 
 }
 
-Gform.prototype.getBase = function (request, extra) {
+Gform.prototype._getBase = function (request, extra) {
 	var parts = request.originalUrl.split('/');
 	// Remove extra path parts.
 	parts.splice(-extra, extra);
@@ -23,17 +25,16 @@ Gform.prototype.getBase = function (request, extra) {
 
 Gform.prototype.start = function (app) {
 
-	this.controllers = meta.controllers;
-	var release = this;
-
 	var resources = [];
-	this.controllers.forEach(function (controller) {
-		var route = url.resolve('/', controller.get('plural'));
+	var models = [];
+	this.controllers.forEach(function(key) {
+		var model = mongoose.models[key];
+		models.push(model);
 		var resource = {};
-		resource.schemaUrl = this.refUtils.getSchemaUrl(controller);
-		resource.resourceUrl = this.refUtils.getResourceUrl(controller);
-		resource.collectionUrl = this.refUtils.getResourceUrl(controller);
-		resource.name = controller.get('singular');
+		resource.schemaUrl = this.refUtils.getSchemaUrl(model);
+		resource.resourceUrl = this.refUtils.getResourceUrl(model);
+		resource.collectionUrl = this.refUtils.getResourceUrl(model);
+		resource.name = model.singular();
 		resources.push(resource);
 	}, this);
 
@@ -45,16 +46,16 @@ Gform.prototype.start = function (app) {
 		response.json({
 			version: this.release,
 			resources: resources,
-			basePath: me.getBase(request, 1) + "/"
+			basePath: me._getBase(request, 1) + "/"
 		});
 	});
 
-	// Add routes for the controller's Swagger API definitions.
-	this.controllers.forEach(function (controller) {
-		var route = url.resolve('/', controller.get('plural'));
-
+	this.controllers.forEach(function(key) {
+		var model = mongoose.models[key];
+		var route = url.resolve('/', model.plural());
+		var controller = {};
 		var GeneratorClass = controller.gformGeneratorClass || this.conf.GeneratorClass || BaucisSchemaGenerator;
-		var generator = controller.gformGenerator || this.conf.generator || new GeneratorClass(controller, this.controllers, this.refUtils);
+		var generator = controller.gformGenerator || this.conf.generator || new GeneratorClass(model, models, this.refUtils);
 		var generatorProps = controller.gformGeneratorProps || this.conf.generatorProps;
 		if (generatorProps) {
 			Object.keys(generatorProps).forEach(function (key) {
@@ -63,15 +64,15 @@ Gform.prototype.start = function (app) {
 		}
 
 		var resource = generator.generateModelDefinition();
-		controller.gformResource = resource;
+		var gformResource = resource;
 
 		app.get(this.basePath + this.gformPath + route, function (request, response, next) {
 			response.set('X-Powered-By', 'Baucis');
-			response.json(controller.gformResource);
+			response.json(gformResource);
 		});
 	}, this);
 
-	return release;
+
 };
 
 

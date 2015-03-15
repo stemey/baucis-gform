@@ -1,33 +1,32 @@
 {
-  "name": "baucis-gform",
-  "version": "0.0.6",
-  "description": "Extension for baucis to provide mongoose schema data via rest services",
-  "main": "index.js",
-  "scripts": {
-    "test": "mocha --bail --timeout 5000"
-  },
-  "author": {
-    "name": "Stefan Meyer"
-  },
-  "license": "MIT",
-  "dependencies": {
-    "deco": "~0.3.2",
-    "mongoose-schema": ">=0.0.5"
-  },
-  "peerDependencies": {
-    "mongoose": ">=3.8.1",
-    "baucis": ">=0.14.2"
-  },
-  "devDependencies": {
-    "mocha": "~1.8.2",
-    "expect.js": "~0.2.0",
-    "request": "~2.21.0",
-    "mongoose": "~3.8.1",
-    "express": "~3.4.6",
-    "async": "~0.2.9"
-  },
-  "readmeFilename": "README.md",
-  "_id": "baucis-gform@0.0.5",
-  "_from": "baucis-gform@>=0.0.5",
-  "readme": "#baucis-gform\n\n\nUse baucis-gform and [gform-admin] to quickly create a data administration ui for your [mongoose] managed data.\n\n##Examples\n\nsee [here](https://github.com/stemey/baucis-example).\n\n##Installation\n\n1. add it to your `package.json`.\n2. call `npm install`\n3. call `require('baucis-gform');` before creating your [baucis] controller via `baucis.rest('user');`\n\n\n##Customization\n\ngform provides a lot of ways to customize the ui. You can do this in the client or on the server.\nHave a look at all the features [here] (http://www.toobop.net).\n\n### attribute level meta data\n\nAdd meta data to a gform property on the schema's path options.\n\n\n    var blogpost = Schema({\n        text: String,\n        title: { type: String, label:\"my wonderful text\"},\n    }})\n\n    // add additional gform information to the text property.\n    blogpost.paths.text.options.gform = {\n        groupCode: \"text\",\n        label: \"The blog entry\",\n        description: \"this should be really interesting stuff.\",\n        editor: \"textarea\"\n    };\n\nThe following properties are supported(see [details](http://www.toobop.net/gform/app/schema)):\n\n* label : The label of the attribute\n* description : a long text describing the attribute's purpose\n* visible : false if the attribute should be invisible\n* disabled : true if the attribute shall not be edited\n* editor : defines the widget to be displayed in the form\n* groupCode : assigns this attribute to a group defined on the schema level\n\n\n\n### schema level meta data\n\n\n#### groups\nDefine groups on the schema level. Add a property gform to the schema object's options.\nthe property contains a property group which defines the group and possible subgroups. Here is an example for a tab:\n\n\n    var group = {\n        editor: \"tab\",\n        groups: [\n            {code: \"general\", label: \"General\"},\n            {code: \"text\", label: \"Text\"}\n        ]\n    }\n\n    var blogpost = Schema({\n        text: String, // will be assigned to general group\n        title: { type: String, groupCode:\"text\"}, // assigned to text group\n    }, {gform: {group: group}})\n\n\n#### references\n\nTo find a referenced model the gform client uses an autocomplete input element.\nThe search is based on a single field which by default is either `name` or `label` if they exist.\nTo set a different field use the configuration property `labelAttribute` on the schema level\n\n\n    var user = Schema({\n        firstname: String, // the field to search when looking for referenced Users\n        age: Integer\n    }, {gform: {labelAttribute: \"firstname\"}})\n\n\n\n[gform-admin]: https://github.com/stemey/gform-admin\n[baucis]: http://github.com/wprl/baucis\n[gform]: http://toobop.net\n[mongoose]: http://github.com/Learnboost/mongoose\n\n\n\n"
+	"name": "baucis-gform",
+	"version": "0.0.7",
+	"description": "Extension for baucis to provide mongoose schema data via rest services",
+	"main": "index.js",
+	"scripts": {
+		"test": "mocha --bail --timeout 5000"
+	},
+	"author": {
+		"name": "Stefan Meyer"
+	},
+	"license": "MIT",
+	"dependencies": {
+		"mongoose-schema": ">=0.0.7"
+	},
+	"peerDependencies": {
+		"deco": "^0.12.0",
+		"mongoose": "^3.8.23",
+		"express": "^4.12.0",
+		"baucis": "^1.0.5"
+	},
+	"devDependencies": {
+		"mocha": "~1.8.2",
+		"expect.js": "~0.2.0",
+		"request": "~2.21.0",
+		"async": "~0.2.9"
+	},
+	"readmeFilename": "README.md",
+	"_id": "baucis-gform@0.0.6",
+	"_from": "baucis-gform@>=0.0.6",
+	"readme": "#baucis-gform\n\n\nUse baucis-gform and [gform-admin] to quickly create a data administration ui for your [mongoose] managed data.\n\n##Examples\n\nsee [here](https://github.com/stemey/baucis-example).\n\n##Installation\n\n1. add it to your `package.json`.\n2. call `npm install`\n3. call `require('baucis-gform');` before creating your [baucis] controller via `baucis.rest('user');`\n\n\n##Customization\n\ngform provides a lot of ways to customize the ui. You can do this in the client or on the server.\nHave a look at all the features [here] (http://www.toobop.net).\n\n### attribute level meta data\n\nAdd meta data to a gform property on the schema's path options.\n\n\n    var blogpost = Schema({\n        text: String,\n        title: { type: String, label:\"my wonderful text\"},\n    }})\n\n    // add additional gform information to the text property.\n    blogpost.paths.text.options.gform = {\n        groupCode: \"text\",\n        label: \"The blog entry\",\n        description: \"this should be really interesting stuff.\",\n        editor: \"textarea\"\n    };\n\nThe following properties are supported(see [details](http://www.toobop.net/gform/app/schema)):\n\n* label : The label of the attribute\n* description : a long text describing the attribute's purpose\n* visible : false if the attribute should be invisible\n* disabled : true if the attribute shall not be edited\n* editor : defines the widget to be displayed in the form\n* groupCode : assigns this attribute to a group defined on the schema level\n\n\n\n### schema level meta data\n\n\n#### groups\nDefine groups on the schema level. Add a property gform to the schema object's options.\nthe property contains a property group which defines the group and possible subgroups. Here is an example for a tab:\n\n\n    var group = {\n        editor: \"tab\",\n        groups: [\n            {code: \"general\", label: \"General\"},\n            {code: \"text\", label: \"Text\"}\n        ]\n    }\n\n    var blogpost = Schema({\n        text: String, // will be assigned to general group\n        title: { type: String, groupCode:\"text\"}, // assigned to text group\n    }, {gform: {group: group}})\n\n\n#### references\n\nTo find a referenced model the gform client uses an autocomplete input element.\nThe search is based on a single field which by default is either `name` or `label` if they exist.\nTo set a different field use the configuration property `labelAttribute` on the schema level\n\n\n    var user = Schema({\n        firstname: String, // the field to search when looking for referenced Users\n        age: Integer\n    }, {gform: {labelAttribute: \"firstname\"}})\n\n\n\n[gform-admin]: https://github.com/stemey/gform-admin\n[baucis]: http://github.com/wprl/baucis\n[gform]: http://toobop.net\n[mongoose]: http://github.com/Learnboost/mongoose\n\n\n\n"
 }

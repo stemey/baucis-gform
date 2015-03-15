@@ -4,8 +4,8 @@ var meta = {controllers: []};
 
 var releaseDecorator = function (options) {
 
-	meta.controllers = options.controllers;
+	meta.controllers.push(options);
 }
-baucis.Release.decorators(releaseDecorator);
+baucis.Controller.decorators(releaseDecorator);
 
 module.exports = meta;

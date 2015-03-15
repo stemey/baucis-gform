@@ -2,9 +2,9 @@
 
 
 // __Module Definition__
-var BaucisRefHelper = module.exports = function (controllers, refUtils) {
-    this.controllers = controllers;
-    this.refUtils = refUtils;
+var BaucisRefHelper = module.exports = function (models, refUtils) {
+	this.models = models;
+	this.refUtils = refUtils;
 };
 
 BaucisRefHelper.prototype.getResourceUrl = function (controller) {
@@ -12,19 +12,14 @@ BaucisRefHelper.prototype.getResourceUrl = function (controller) {
 }
 
 BaucisRefHelper.prototype.update = function (attribute, schemaId) {
-    var refControllers = this.controllers.filter(function (c) {
-        return c.get('singular') == schemaId;
-    });
-    if (refControllers.length != 1) {
-        //throw new Error("cannot find unique controller for reference " + schemaId);
-    } else {
-        var controller = refControllers[0];
-        attribute.url = this.refUtils.getResourceUrl(controller);
-        var conf = controller.get("schema").options.gform;
-        if (conf.labelAttribute) {
-            attribute.searchProperty = controller.get("schema").options.gform.labelAttribute;
-        }
-        attribute.schemaUrl = this.refUtils.getSchemaUrl(controller);
-    }
+	var model = this.models.filter(function(model) {
+		return model.modelName==schemaId;
+	})[0];
+	attribute.url = this.refUtils.getResourceUrl(model);
+	var conf = model.schema.options.gform;
+	if (conf.labelAttribute) {
+		attribute.searchProperty = model.schema.options.gform.labelAttribute;
+	}
+	attribute.schemaUrl = this.refUtils.getSchemaUrl(model);
 }
 
