@@ -1,6 +1,6 @@
 {
 	"name": "baucis-gform",
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"description": "Extension for baucis to provide mongoose schema data via rest services",
 	"main": "index.js",
 	"scripts": {
@@ -11,7 +11,7 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"mongoose-schema": ">=0.0.7"
+		"mongoose-schema": ">=0.0.5"
 	},
 	"peerDependencies": {
 		"deco": "^0.12.0",
